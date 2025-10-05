@@ -2,7 +2,7 @@ import { Header } from "@/components/header"
 import { ProductCard } from "@/components/product-card"
 import { products } from "@/lib/products"
 import { Badge } from "@/components/ui/badge"
-import { Leaf, Package, Sparkles, ArrowRight, CheckCircle2, ShoppingBag, Star, Clock, Shield } from "lucide-react"
+import { Leaf, Package, Sparkles, ArrowRight, CheckCircle2, ShoppingBag, Star, Clock, Shield, Gift } from "lucide-react"
 import Link from "next/link"
 
 export default function HomePage() {
@@ -29,6 +29,8 @@ export default function HomePage() {
               <span className="text-xs sm:text-sm font-medium text-emerald-700">500+ clients satisfaits</span>
             </div>
 
+
+
             {/* Main Heading */}
             <div className="space-y-3 sm:space-y-4">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight tracking-tight px-2">
@@ -38,9 +40,21 @@ export default function HomePage() {
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
-                Recevez vos plantes en conserve avec tout le nécessaire. Ouvrez, plantez, et profitez de vos herbes fraîches en quelques semaines.
-              </p>
+              <div className="space-y-3">
+                <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
+                  Recevez vos plantes en conserve avec tout le nécessaire. Ouvrez, plantez, et profitez de vos herbes fraîches en quelques semaines.
+                </p>
+
+                {/* Enhanced Promotion Text */}
+                <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-4 mx-4">
+                  <div className="flex items-center justify-center gap-2 text-amber-800">
+                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                    <span className="text-sm sm:text-base font-semibold text-center">
+                      🎁 <strong>Offre spéciale</strong> : Achetez 3 plantes, 4ème plante mystérieuse <strong>OFFERTE</strong> !
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* CTA Buttons - Mobile Stacked */}
@@ -64,15 +78,20 @@ export default function HomePage() {
             {/* Trust Indicators - Mobile Responsive */}
             <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-6 pt-4 sm:pt-6 px-4">
               {[
-                { icon: CheckCircle2, text: "Livraison 8 TND" },
-                { icon: Shield, text: "100% Bio" },
-                { icon: Clock, text: "Livraison 2-3 jours" }
+                { icon: CheckCircle2, text: "Livraison 7 TND", color: "emerald" },
+                { icon: Shield, text: "100% Bio", color: "emerald" },
+                { icon: Clock, text: "Livraison 2-3 jours", color: "emerald" },
+                { icon: Gift, text: "4ème plante offerte", color: "amber" }
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                    <item.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600" />
+                  <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${item.color === "amber" ? "bg-amber-100" : "bg-emerald-100"
+                    }`}>
+                    <item.icon className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${item.color === "amber" ? "text-amber-600" : "text-emerald-600"
+                      }`} />
                   </div>
-                  <span className="font-medium">{item.text}</span>
+                  <span className={`font-medium ${item.color === "amber" ? "text-amber-700" : ""}`}>
+                    {item.text}
+                  </span>
                 </div>
               ))}
             </div>
@@ -84,10 +103,23 @@ export default function HomePage() {
       <section id="produits" className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-b from-background to-secondary/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 max-w-3xl mx-auto">
-            <Badge variant="outline" className="mb-3 sm:mb-4 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm border-emerald-500/30">
-              <Leaf className="mr-1.5 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 text-emerald-600" />
-              Nos Plantes en Conserve
-            </Badge>
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <Badge variant="outline" className="px-4 py-1.5 sm:px-5 sm:py-2 text-sm sm:text-base border-emerald-500/30">
+                <Leaf className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
+                Nos Plantes en Conserve
+              </Badge>
+
+              {/* Enhanced Promotion Banner */}
+              <div className="relative w-full max-w-2xl">
+
+
+                {/* Floating elements */}
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-lg">
+                  <span className="text-amber-600 text-xs font-bold">!</span>
+                </div>
+              </div>
+            </div>
+
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 px-4">
               Choisissez Votre Plante
             </h2>
@@ -101,13 +133,29 @@ export default function HomePage() {
             {products.map((product, index) => (
               <div
                 key={product.id}
-                className="animate-fade-in-up transform transition-all duration-300"
+                className="animate-fade-in-up transform transition-all duration-300 relative group"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
+                {/* Enhanced Free Badge for every 4th product */}
+                {index % 4 === 3 && (
+                  <div className="absolute -top-3 -right-3 z-20 transform group-hover:scale-110 transition-transform duration-300">
+                    <div className="relative">
+                      <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-2xl animate-pulse">
+                        <div className="flex items-center gap-1">
+                          <Gift className="h-3 w-3" />
+                          <span>GRATUIT</span>
+                        </div>
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+                    </div>
+                  </div>
+                )}
                 <ProductCard product={product} />
               </div>
             ))}
           </div>
+
+
         </div>
       </section>
 
@@ -125,14 +173,39 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-5xl mx-auto">
             {[
-              { num: 1, title: "Recevez", desc: "Commandez en ligne et recevez votre conserve en 2-3 jours partout en Tunisie" },
-              { num: 2, title: "Plantez", desc: "Suivez notre guide illustré étape par étape pour planter vos graines correctement" },
-              { num: 3, title: "Récoltez", desc: "Profitez de vos herbes fraîches et biologiques dans vos plats quotidiens" }
-            ].map((step) => (
-              <div key={step.num} className="relative text-center group">
+              {
+                num: "1",
+                title: "Commandez",
+                desc: "Choisissez 3 plantes et recevez automatiquement une 4ème plante gratuite",
+                highlight: true
+              },
+              {
+                num: "2",
+                title: "Recevez & Plantez",
+                desc: "Livraison rapide à 7 TND partout en Tunisie. Suivez notre guide illustré",
+                highlight: false
+              },
+              {
+                num: "3",
+                title: "Récoltez & Économisez",
+                desc: "Profitez de 4 herbes fraîches au prix de 3 ! Économisez 25%",
+                highlight: true
+              }
+            ].map((step, index) => (
+              <div key={index} className="relative text-center group">
+                {step.highlight && (
+                  <div className="absolute -top-3 -right-3 z-10">
+                    <div className="bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                      ÉCONOMIE
+                    </div>
+                  </div>
+                )}
                 <div className="absolute -inset-4 bg-gradient-to-br from-emerald-500/10 to-green-500/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-shadow">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white font-bold text-2xl sm:text-3xl shadow-lg group-hover:scale-110 transition-transform">
+                <div className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-shadow h-full">
+                  <div className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-2xl flex items-center justify-center text-white font-bold text-2xl sm:text-3xl shadow-lg group-hover:scale-110 transition-transform ${step.highlight
+                    ? "bg-gradient-to-br from-amber-500 to-orange-500"
+                    : "bg-gradient-to-br from-emerald-500 to-green-600"
+                    }`}>
                     {step.num}
                   </div>
                   <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2 sm:mb-3">{step.title}</h3>
@@ -151,13 +224,29 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-5xl mx-auto">
             {[
-              { icon: Leaf, title: "100% Naturel & Bio", desc: "Graines biologiques certifiées et substrat naturel sans produits chimiques" },
-              { icon: Package, title: "Livraison Express", desc: "Seulement 8 TND pour une livraison rapide partout en Tunisie sous 2-3 jours" },
-              { icon: Sparkles, title: "Guide Détaillé", desc: "Instructions illustrées pour réussir votre culture, même sans expérience" }
+              {
+                icon: Leaf,
+                title: "100% Naturel & Bio",
+                desc: "Graines biologiques certifiées et substrat naturel sans produits chimiques"
+              },
+              {
+                icon: Package,
+                title: "Livraison 7 TND + Offre",
+                desc: "Livraison à 7 TND partout en Tunisie + 1 plante offerte pour 3 achetées"
+              },
+              {
+                icon: Gift,
+                title: "Économie Garantie",
+                desc: "Obtenez 25% de plantes en plus gratuitement. Plus vous commandez, plus vous économisez !"
+              }
             ].map((feature, i) => (
               <div key={i} className="text-center group">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <feature.icon className="h-7 w-7 sm:h-8 sm:w-8 text-emerald-600" />
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform ${feature.title.includes("Économie")
+                  ? "bg-gradient-to-br from-amber-500/20 to-orange-500/20"
+                  : "bg-gradient-to-br from-emerald-500/20 to-green-500/20"
+                  }`}>
+                  <feature.icon className={`h-7 w-7 sm:h-8 sm:w-8 ${feature.title.includes("Économie") ? "text-amber-600" : "text-emerald-600"
+                    }`} />
                 </div>
                 <h3 className="text-base sm:text-lg font-bold text-foreground mb-2 sm:mb-3">{feature.title}</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed px-2">
@@ -169,32 +258,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section - Mobile Optimized */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-emerald-600 to-green-700 p-8 sm:p-10 md:p-16 shadow-2xl">
-            <div className="absolute inset-0 bg-grid-white/10" />
-            <div className="absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 bg-white/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-64 sm:h-64 bg-white/10 rounded-full blur-3xl" />
 
-            <div className="relative z-10">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 px-2">
-                Commencez Votre Jardin Aujourd'hui
-              </h2>
-              <p className="text-base sm:text-lg md:text-xl text-emerald-50 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed px-2">
-                Rejoignez des centaines de Tunisiens qui cultivent leurs propres herbes aromatiques à la maison
-              </p>
-              <Link
-                href="#produits"
-                className="inline-flex items-center justify-center rounded-xl bg-white px-8 py-3.5 sm:px-10 sm:py-5 text-base sm:text-lg font-semibold text-emerald-700 hover:bg-emerald-50 transition-all hover:scale-105 shadow-xl"
-              >
-                Voir nos plantes
-                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="border-t border-border py-8 sm:py-10 md:py-12 bg-secondary/10">
@@ -205,7 +269,7 @@ export default function HomePage() {
               <span>Planti</span>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Cultivez naturel, mangez frais
+              Cultivez naturel
             </p>
             <p className="text-[10px] sm:text-xs text-muted-foreground">
               © 2025 Planti. Tous droits réservés.
