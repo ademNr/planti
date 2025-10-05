@@ -347,7 +347,7 @@ export default function ProductPage() {
                         © 2025 Planti. Tous droits réservés.
                     </p>
                     <p className="text-xs text-muted-foreground">
-                        Cultivez naturel, mangez frais
+                        Cultivez naturel
                     </p>
                 </div>
             </footer>
