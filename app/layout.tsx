@@ -4,7 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { Suspense } from "react"
 import { CartProvider } from "@/contexts/CartContext"
-
+import { Analytics } from "@vercel/analytics/next"
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -27,7 +27,10 @@ export default function RootLayout({
     <html lang="fr">
       <body className={`${inter.variable} font-sans antialiased`}>
         <CartProvider>
-          <Suspense fallback={null}>{children}</Suspense>
+          <Suspense fallback={null}>
+            {children}
+            <Analytics />
+          </Suspense>
         </CartProvider>
       </body>
     </html>
