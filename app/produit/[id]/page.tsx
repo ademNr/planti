@@ -329,12 +329,6 @@ export default function ProductPage() {
                         {guideImagePath ? (
                             <div className="space-y-6 sm:space-y-8">
                                 <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-white dark:bg-gray-900 shadow-2xl border-2 border-emerald-200/50 dark:border-emerald-800/30">
-                                    {/* Language Badge */}
-                                    <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 bg-gradient-to-r from-emerald-600 to-green-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg backdrop-blur-sm border border-white/20 flex items-center gap-1.5">
-                                        <Languages className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                                        {guideLanguage === 'FR' ? 'Français' : 'العربية'}
-                                    </div>
-
                                     {/* Image Container */}
                                     <div className="relative w-full">
                                         <Image
