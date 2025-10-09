@@ -62,7 +62,7 @@ export const products: Product[] = [
     {
         id: "oeillet-dinde",
         name: "Œillet d'Inde",
-        price: 19,
+        price: 22,
         images: {
             main: "/inde3.png",
             growth: ["/inde0.png", "/inde1.png", "/inde2.png", "/inde3.png"],
@@ -102,7 +102,7 @@ export const products: Product[] = [
     {
         id: "origan",
         name: "Origan",
-        price: 19,
+        price: 22,
         images: {
             main: "/origan3.png",
             growth: ["/origan0.png", "/origan1.png", "/origan2.png", "/origan3.png"],
@@ -145,3 +145,4 @@ export const products: Product[] = [
 export function getProductById(id: string): Product | undefined {
     return products.find((product) => product.id === id)
 }
+
