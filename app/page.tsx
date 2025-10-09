@@ -50,7 +50,7 @@ export default function HomePage() {
                   <div className="flex items-center justify-center gap-2 text-amber-800">
                     <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                     <span className="text-sm sm:text-base font-semibold text-center">
-                      🎁 <strong>Offre spéciale</strong> : Achetez 3 plantes, 4ème plante mystérieuse <strong>OFFERTE</strong> !
+                      🎁 <strong>Offre spéciale</strong> : Achetez 3 plantes, 4ème plante mystérieuse <strong>GRATUITE</strong> !
                     </span>
                   </div>
                 </div>
