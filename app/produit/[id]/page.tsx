@@ -8,7 +8,7 @@ import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
 import { getProductById } from "@/lib/products"
 import { useCart } from "@/contexts/CartContext"
-import { ChevronLeft, ChevronRight, Check, Package, Clock, Shield, Sparkles, Plus, Minus, ShoppingCart, CheckCircle2, Truck, Leaf } from "lucide-react"
+import { ChevronLeft, ChevronRight, Check, Package, Shield, Sparkles, Plus, Minus, ShoppingCart, CheckCircle2, Truck, Leaf, Languages, Download } from "lucide-react"
 
 export default function ProductPage() {
     const params = useParams()
@@ -19,6 +19,7 @@ export default function ProductPage() {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0)
     const [quantity, setQuantity] = useState(1)
     const [addedToCart, setAddedToCart] = useState(false)
+    const [guideLanguage, setGuideLanguage] = useState<'FR' | 'AR'>('FR')
 
     if (!product) {
         return (
@@ -39,6 +40,23 @@ export default function ProductPage() {
     const allImages = Array.from(
         new Set([product.images.main, ...product.images.growth])
     )
+
+    // Map product IDs to their guide image filenames
+    const getGuideImagePath = (productId: string, language: 'FR' | 'AR') => {
+        const guideMap: Record<string, string> = {
+            'basilic': 'basilic',
+            'oeillet-dinde': 'inde',
+            'origan': 'origan'
+        }
+
+        const plantName = guideMap[productId]
+        if (!plantName) return null
+
+        const lang = language.toLowerCase()
+        return `/guide${plantName}_${lang}.png`
+    }
+
+    const guideImagePath = getGuideImagePath(params.id as string, guideLanguage)
 
     const nextStep = () => {
         setCurrentStepIndex((prev) => (prev < product.usageGuide.steps.length - 1 ? prev + 1 : prev))
@@ -265,77 +283,150 @@ export default function ProductPage() {
                     </div>
                 </div>
 
-                {/* Usage Guide - Mobile First Design */}
+                {/* Usage Guide Section - With Image Support */}
                 <div className="bg-gradient-to-br from-emerald-50/50 via-background to-green-50/30 dark:from-emerald-950/20 dark:via-background dark:to-green-950/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 border border-border/50 shadow-xl">
-                    <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+                    <div className="text-center mb-6 sm:mb-8 lg:mb-10">
                         <h2 className="text-xl sm:text-2xl lg:text-4xl font-extrabold text-foreground mb-2 sm:mb-4 tracking-tight">
                             {product.usageGuide.title}
                         </h2>
-                        <p className="text-xs sm:text-sm lg:text-base text-muted-foreground max-w-2xl mx-auto">
+                        <p className="text-xs sm:text-sm lg:text-base text-muted-foreground max-w-2xl mx-auto mb-4 sm:mb-6">
                             Suivez ces étapes pour cultiver votre {product.name.toLowerCase()}
                         </p>
+
+                        {/* Language Toggle - Clean Design */}
+                        {guideImagePath && (
+                            <div className="inline-flex items-center gap-2 bg-card border-2 border-border rounded-full p-1 shadow-lg">
+                                <button
+                                    onClick={() => setGuideLanguage('FR')}
+                                    className={cn(
+                                        "flex items-center gap-1.5 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300",
+                                        guideLanguage === 'FR'
+                                            ? "bg-gradient-to-r from-emerald-600 to-green-600 text-white shadow-md"
+                                            : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                >
+                                    <Languages className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                    Français
+                                </button>
+                                <button
+                                    onClick={() => setGuideLanguage('AR')}
+                                    className={cn(
+                                        "flex items-center gap-1.5 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300",
+                                        guideLanguage === 'AR'
+                                            ? "bg-gradient-to-r from-emerald-600 to-green-600 text-white shadow-md"
+                                            : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                >
+                                    <Languages className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                    العربية
+                                </button>
+                            </div>
+                        )}
                     </div>
 
-                    <div className="max-w-3xl mx-auto">
-                        {/* Step Progress - Mobile Optimized */}
-                        <div className="flex items-center justify-center gap-2 mb-6 sm:mb-8 lg:mb-12 overflow-x-auto pb-2 px-4">
-                            {product.usageGuide.steps.map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => setCurrentStepIndex(index)}
-                                    className={cn(
-                                        "h-1.5 sm:h-2 rounded-full transition-all duration-300 flex-shrink-0",
-                                        index === currentStepIndex
-                                            ? "w-10 sm:w-12 bg-gradient-to-r from-emerald-600 to-green-600 shadow-lg"
-                                            : index < currentStepIndex
-                                                ? "w-6 sm:w-8 bg-emerald-400"
-                                                : "w-2.5 sm:w-3 bg-border hover:bg-emerald-300",
-                                    )}
-                                    aria-label={`Étape ${index + 1}`}
-                                />
-                            ))}
-                        </div>
+                    <div className="max-w-5xl mx-auto">
+                        {/* Guide Image Display - Premium Design */}
+                        {guideImagePath ? (
+                            <div className="space-y-6 sm:space-y-8">
+                                <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-white dark:bg-gray-900 shadow-2xl border-2 border-emerald-200/50 dark:border-emerald-800/30">
+                                    {/* Language Badge */}
+                                    <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 bg-gradient-to-r from-emerald-600 to-green-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg backdrop-blur-sm border border-white/20 flex items-center gap-1.5">
+                                        <Languages className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                                        {guideLanguage === 'FR' ? 'Français' : 'العربية'}
+                                    </div>
 
-                        {/* Step Card - Enhanced Mobile */}
-                        <div className="bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl">
-                            <div className="text-center space-y-4 sm:space-y-6">
-                                <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-2xl bg-gradient-to-br from-emerald-600 to-green-600 text-white font-extrabold text-xl sm:text-2xl lg:text-3xl shadow-xl ring-4 ring-emerald-100 dark:ring-emerald-900/30">
-                                    {currentStep.step}
-                                </div>
-                                <h3 className="text-lg sm:text-xl lg:text-3xl font-extrabold text-foreground tracking-tight">
-                                    {currentStep.title}
-                                </h3>
-                                <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
-                                    {currentStep.description}
-                                </p>
+                                    {/* Image Container */}
+                                    <div className="relative w-full">
+                                        <Image
+                                            src={guideImagePath}
+                                            alt={`Guide de plantation ${product.name} - ${guideLanguage}`}
+                                            width={1200}
+                                            height={1600}
+                                            className="w-full h-auto"
+                                            priority
+                                        />
+                                    </div>
 
-                                {/* Navigation Buttons - Mobile Optimized */}
-                                <div className="flex gap-2 sm:gap-3 pt-4 sm:pt-6 max-w-md mx-auto">
-                                    <Button
-                                        variant="outline"
-                                        onClick={prevStep}
-                                        disabled={currentStepIndex === 0}
-                                        className="flex-1 h-11 sm:h-12 text-sm sm:text-base font-semibold border-2 disabled:opacity-40 active:scale-95 transition-transform"
-                                    >
-                                        <ChevronLeft className="w-4 h-4 mr-1" />
-                                        Précédent
-                                    </Button>
-                                    <Button
-                                        onClick={nextStep}
-                                        disabled={currentStepIndex === product.usageGuide.steps.length - 1}
-                                        className="flex-1 h-11 sm:h-12 text-sm sm:text-base font-semibold bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 disabled:opacity-40 active:scale-95 transition-transform"
-                                    >
-                                        Suivant
-                                        <ChevronRight className="w-4 h-4 ml-1" />
-                                    </Button>
+                                    {/* Overlay gradient for better readability */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-background/5 via-transparent to-transparent pointer-events-none" />
                                 </div>
 
-                                {/* Step Counter */}
-                                <p className="text-xs sm:text-sm text-muted-foreground font-medium pt-2">
-                                    Étape {currentStepIndex + 1} sur {product.usageGuide.steps.length}
-                                </p>
+                                {/* Download Guide CTA */}
+                                <div className="text-center">
+                                    <a
+                                        href={guideImagePath}
+                                        download={`Guide-${product.name}-${guideLanguage}.png`}
+                                        className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 text-sm sm:text-base"
+                                    >
+                                        <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+                                        Télécharger le guide
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        ) : (
+                            /* Fallback to step-by-step guide if no image */
+                            <>
+                                {/* Step Progress - Mobile Optimized */}
+                                <div className="flex items-center justify-center gap-2 mb-6 sm:mb-8 lg:mb-12 overflow-x-auto pb-2 px-4">
+                                    {product.usageGuide.steps.map((_, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setCurrentStepIndex(index)}
+                                            className={cn(
+                                                "h-1.5 sm:h-2 rounded-full transition-all duration-300 flex-shrink-0",
+                                                index === currentStepIndex
+                                                    ? "w-10 sm:w-12 bg-gradient-to-r from-emerald-600 to-green-600 shadow-lg"
+                                                    : index < currentStepIndex
+                                                        ? "w-6 sm:w-8 bg-emerald-400"
+                                                        : "w-2.5 sm:w-3 bg-border hover:bg-emerald-300",
+                                            )}
+                                            aria-label={`Étape ${index + 1}`}
+                                        />
+                                    ))}
+                                </div>
+
+                                {/* Step Card - Enhanced Mobile */}
+                                <div className="bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl">
+                                    <div className="text-center space-y-4 sm:space-y-6">
+                                        <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-2xl bg-gradient-to-br from-emerald-600 to-green-600 text-white font-extrabold text-xl sm:text-2xl lg:text-3xl shadow-xl ring-4 ring-emerald-100 dark:ring-emerald-900/30">
+                                            {currentStep.step}
+                                        </div>
+                                        <h3 className="text-lg sm:text-xl lg:text-3xl font-extrabold text-foreground tracking-tight">
+                                            {currentStep.title}
+                                        </h3>
+                                        <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
+                                            {currentStep.description}
+                                        </p>
+
+                                        {/* Navigation Buttons - Mobile Optimized */}
+                                        <div className="flex gap-2 sm:gap-3 pt-4 sm:pt-6 max-w-md mx-auto">
+                                            <Button
+                                                variant="outline"
+                                                onClick={prevStep}
+                                                disabled={currentStepIndex === 0}
+                                                className="flex-1 h-11 sm:h-12 text-sm sm:text-base font-semibold border-2 disabled:opacity-40 active:scale-95 transition-transform"
+                                            >
+                                                <ChevronLeft className="w-4 h-4 mr-1" />
+                                                Précédent
+                                            </Button>
+                                            <Button
+                                                onClick={nextStep}
+                                                disabled={currentStepIndex === product.usageGuide.steps.length - 1}
+                                                className="flex-1 h-11 sm:h-12 text-sm sm:text-base font-semibold bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 disabled:opacity-40 active:scale-95 transition-transform"
+                                            >
+                                                Suivant
+                                                <ChevronRight className="w-4 h-4 ml-1" />
+                                            </Button>
+                                        </div>
+
+                                        {/* Step Counter */}
+                                        <p className="text-xs sm:text-sm text-muted-foreground font-medium pt-2">
+                                            Étape {currentStepIndex + 1} sur {product.usageGuide.steps.length}
+                                        </p>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
